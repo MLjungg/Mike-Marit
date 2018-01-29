@@ -2,13 +2,15 @@
 
 from bintreefile import Bintree
 
-svenska = Bintree()
-with open("word3.txt", "r") as svenskfil:
+svenska = Bintree() #Skapa tomt träd
 
-    for rad in svenskfil:
-        ordet = rad.strip()                # Ett trebokstavsord per rad
+with open("word3.txt", "r") as svenskfil: #Öppna fil och döp till svenskfil
+    for rad in svenskfil: #För varje rad i svenskfil
+        ordet = rad.strip() #Skiljer vi på orden
+        #print ordet# Ett trebokstavsord per rad
         if ordet in svenska:
             print(ordet)
         else:
-            svenska.addToTree(ordet)             # in i sökträdet
+            svenska.addToTree(ordet)
+#svenska.printTree()# in i sökträdet
 print("\n")

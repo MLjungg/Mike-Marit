@@ -29,22 +29,20 @@ class Bintree:
 
     def __contains__(self,value):
         if self.root != None:
-            if self.finns(self.root, value):
+            if self.__finns(value,self.root):
                 return True
             else:
                 return False
         else:
             return False
 
-    def finns(self, node, value):
+    def __finns(self, value, node):
         if value == node.value:
             return True
-        elif (value < node.value and node.left != None):
-            print (node.value)
-            return self.finns(node.left, value)
-        elif (value > node.value and node.right != None):
-            self.finns(node.right, value)
-
+        elif value < node.value and node.left != None:
+            return self.__finns(value, node.left)
+        elif value > node.value and node.right != None:
+            return self.__finns(value, node.right)
 
     def printTree(self):
         if self.root != None:
@@ -68,21 +66,14 @@ def test():
     svenska.addToTree('hej')
     svenska.addToTree('spela')
     svenska.addToTree('marsipantarta')
+    svenska.addToTree('Citron')
 
-    if 'hej' in svenska:
-        print ('funkar')
+    if 'banan' in svenska:
+        print('Exist')
     else:
-        print ('funkar inte')
+       print ('Something is totally wrong')
 
-#    svenska.addToTree('Citron')
-
-
-#    if 'gurka' in svenska:
-#        print('Exist')
-#    else:
-#        print ('Somethings is totally wrong')
-
-    svenska.printTree()
+    #svenska.printTree()
 
 def main():
     test()
