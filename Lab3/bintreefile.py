@@ -8,6 +8,7 @@ class Node:
         self.right = None
 
 #Skapa ett binärt träd?
+
 class Bintree:
     def __init__(self):
         self.root = None
