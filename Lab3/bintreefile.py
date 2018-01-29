@@ -7,7 +7,7 @@ class Node:
         self.left = None
         self.right = None
 
-#Skapa ett binärt träd?
+#Skapa ett binärt träd
 
 class Bintree:
     def __init__(self):

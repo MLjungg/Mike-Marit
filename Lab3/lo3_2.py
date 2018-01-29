@@ -18,13 +18,13 @@ print("\n")
 
 with open("engelska.txt", "r") as engelskafil: #Öppna fil och döp till svenskfil
     for rad in engelskafil:
-        rad = rad.replace('.','').replace('"','').replace('!','').replace(',','').replace("'" , '')
-        for ordet in rad.split():
+        rad = rad.replace('.','').replace('"','').replace('!','').replace(',','').replace("'" , '') #Ta bort onödiga tecken
+        for ordet in rad.split(): #Ny rad för varje ord
             if ordet in engelska:
                 pass
             else:
                 engelska.addToTree(ordet)
-                if ordet in svenska:
+                if ordet in svenska: #Jämföra ordet mot svenska ordlistan
                     print ordet
 
 print("\n")
