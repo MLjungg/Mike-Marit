@@ -1,26 +1,29 @@
 # -*- coding: utf-8 -*-
+
+# Klass för noder i träder
 class Node:
     def __init__(self, value):
         self.value = value
         self.left = None
         self.right = None
 
+#Skapa ett binärt träd
 class Bintree:
     def __init__(self):
         self.root = None
 
     def addToTree(self, value):
-        if self.root == None:
+        if self.root == None: #Om det inte finns något i trädet skapa en rot till trädet
             self.root = Node(value)
         else:
-            self.__add(value, self.root)
+            self.__add(value, self.root) #Anropa __add för att lägga till i trädet
 
     def __add(self, value, node):
         if value < node.value:
-            if node.left != None:
-                self.__add(value, node.left)
+            if node.left != None: #Om värdet till vänster om noden är None finns det ingen nod där
+                self.__add(value, node.left) #Vandrar vidare
             else:
-                node.left=Node(value)
+                node.left=Node(value) #Finns ej något till vänster. Nya noden skapas till vänster
         else:
             if node.right != None:
                 self.__add(value, node.right)
@@ -28,8 +31,8 @@ class Bintree:
                 node.right = Node(value)
 
     def __contains__(self,value):
-        if self.root != None:
-            if self.__finns(value,self.root):
+        if self.root != None: #Om det finns något i trädet
+            if self.__finns(value,self.root): #Om funktionen __finns retunerar true ska contains returnera true
                 return True
             else:
                 return False
@@ -37,15 +40,17 @@ class Bintree:
             return False
 
     def __finns(self, value, node):
-        if value == node.value:
+        if value == node.value: #Om noden och sökta värdet är samma returnera true
             return True
-        elif value < node.value and node.left != None:
-            return self.__finns(value, node.left)
-        elif value > node.value and node.right != None:
-            return self.__finns(value, node.right)
+        elif value < node.value and node.left != None: # Om värdet är mindre än noden och det finns något till vänster
+            return self.__finns(value, node.left) #Rekursivt. Sök till vänster
+        elif value > node.value and node.right != None: # Om värdet är större än noden och det finns något till höger
+            return self.__finns(value, node.right) # Rekursivt. Sök till höger
+        else:
+            False
 
     def printTree(self):
-        if self.root != None:
+        if self.root != None: #Om trädet inte är tom
             self.__showTree(self.root)
         else:
             print ('There is no tree to print out')
@@ -55,8 +60,6 @@ class Bintree:
             self.__showTree(node.left)
             print (str(node.value) + ' ')
             self.__showTree(node.right)
-        else:
-            pass
 
 def test():
     svenska = Bintree()
@@ -68,6 +71,7 @@ def test():
     svenska.addToTree('marsipantarta')
     svenska.addToTree('Citron')
 
+    #Testkod
     if 'banan' in svenska:
         print('Exist')
     else:
