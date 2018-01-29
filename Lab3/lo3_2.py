@@ -16,12 +16,14 @@ engelska = Bintree()
 #svenska.printTree()# in i sökträdet
 print("\n")'''
 
-lista = []
 with open("engelska.txt", "r") as engelskafil: #Öppna fil och döp till svenskfil
-    for rad in engelskafil: #För varje rad i svenskfil
+    for rad in engelskafil:
+        rad = rad.replace('.','').replace('"','').replace('!','').replace(',','').replace("'" , '')
         for ordet in rad.split():
-            lista += ordet
-            print ordet #Skiljer vi på ordet
+            if ordet in engelska:
+                pass
+            else:
+                engelska.addToTree(ordet)
 
         #  Ett trebokstavsord per rad
         #if ordet in engelska:
@@ -29,6 +31,5 @@ with open("engelska.txt", "r") as engelskafil: #Öppna fil och döp till svenskf
         #else:
          #   engelska.addToTree(ordet)
             #svenska.printTree()# in i sökträdet
-print lista
-#engelska.printTree()
+
 print("\n")
