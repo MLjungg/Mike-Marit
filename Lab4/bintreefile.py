@@ -33,7 +33,7 @@ class Bintree:
 
     def __contains__(self,value):
         if self.root != None: #Om det finns något i trädet
-            if self.__finns(value,self.root): #Om funktionen __finns retunerar true ska contains returnera true
+            if self.__finns(value,self.root): #Om funktionen_finns retunerar true ska contains returnera true
                 return True
             else:
                 return False
