@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import sys
+
 from bintreefile import Bintree
 
 svenska = Bintree() #Skapar tomt träd med namn svenska
@@ -33,7 +35,7 @@ def kollaord(ordet):
         if ordet in gamla:
             pass
         else:
-            print ordet
+            print (ordet)
             gamla.addToTree(ordet)
 
 def test():
@@ -48,5 +50,6 @@ def test():
 
     startord='söt'
     makechildren(startord)
+    
 
 test()

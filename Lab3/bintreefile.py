@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import sys
+
 # Klass för noder i träder
 class Node:
     def __init__(self, value):
@@ -86,5 +88,6 @@ def test():
 
 def main():
     test()
+    print (sys.version)
 
 main()
