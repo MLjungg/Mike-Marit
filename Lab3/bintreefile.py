@@ -33,7 +33,7 @@ class Bintree:
 
     def __contains__(self,value):
         if self.root != None: #Om det finns något i trädet
-            if self.__finns(value,self.root): #Om funktionen __finns retunerar true ska contains returnera true
+            if self.__finns(value,self.root): #Om funktionen finns retunerar true ska contains returnera true
                 return True
             else:
                 return False
@@ -73,7 +73,7 @@ def test():
     svenska.addToTree('citron')
 
     #Testkod förvänta else-satsen
-    if 'bajs' in svenska:
+    if 'word' in svenska:
         print('Exist')
     else:
        print ('Something is totally wrong')
@@ -83,8 +83,6 @@ def test():
         print('Exist')
     else:
         print ('Something is totally wrong')
-
-    #svenska.printTree()
 
 def main():
     test()
