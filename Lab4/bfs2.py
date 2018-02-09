@@ -7,8 +7,10 @@ q = LinkedQ()
 svenska = Bintree()
 gamla = Bintree()
 
+
 def makechildren(startord):
-    alfabet = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','å','ä','ö']
+    alfabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
+               'v', 'w', 'x', 'y', 'z', 'å', 'ä', 'ö']
     startord = list(startord)
 
     for i in range(len(startord)):
@@ -16,12 +18,13 @@ def makechildren(startord):
             if startord[i] == alfabet_letter:
                 pass
             else:
-                combination_startord=startord[:] #Så man kopierar lista
-                combination_startord[i] = alfabet_letter #Ersätter det index som vi kollar igenom med alfabet_letter
-                combination_startord=''.join(combination_startord) #Så man går från list till str
+                combination_startord = startord[:]  # Så man kopierar lista
+                combination_startord[i] = alfabet_letter  # Ersätter det index som vi kollar igenom med alfabet_letter
+                combination_startord = ''.join(combination_startord)  # Så man går från list till str
                 if combination_startord in svenska and combination_startord not in gamla:
-                    q.enqueue(combination_startord)
-                    gamla.addToTree(combination_startord) #Sparar vi tillagda ord
+                    q.enqueue(combination_startord) # Lägger till barnen i kön
+                    gamla.addToTree(combination_startord)  # Sparar vi tillagda ord
+
 
 def test():
     # Läser in fil och skapar ett binärtträd från ordlistan.
@@ -33,23 +36,23 @@ def test():
             else:
                 svenska.addToTree(ordet)
 
-    startord = 'ute'
-    slutord = 'hit'
-    q.enqueue(startord)
+    startord = 'blå'
+    slutord = 'röd'
+    q.enqueue(startord) #Lägg till det första ordet i kön.
     found = False
 
     while not q.isEmpty():
-        nod = q.dequeue()
+        nod = q.dequeue()  # Tar bort det översta ordet i kön. Tar först bort stardord.
         if nod == slutord:
-            print ('Hittad!!')
+            print('Det finns en väg till', slutord)
             found = True
-            print (nod)
             break
         else:
-            makechildren(nod)
+            print(nod)
+            makechildren(nod) # Skapa alla barn till ordet som lägger de sista i kön.
 
     if found == False:
         print('Baajs den fanns inte')
 
-test()
 
+test()

@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import sys
-
 from bintreefile import Bintree
 
 svenska = Bintree() #Skapar tomt träd med namn svenska
@@ -11,13 +9,9 @@ gamla = Bintree()
 #slutord = str(input('Ange slutord: '))
 
 # Skapar kombinationer av startordet utifrån alfabetet
-#TODO: När vi gör om ordet till lista kan det inte å,ä,ö avkodas. Kan göra om det på annat sätt?
 def makechildren(startord):
     alfabet = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','å','ä','ö']
-    #print startord
     startord = list(startord)
-    #print startord
-
     for i in range(len(startord)):
         for alfabet_letter in alfabet:
             if startord[i] == alfabet_letter:
