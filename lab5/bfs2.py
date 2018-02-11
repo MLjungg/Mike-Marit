@@ -21,14 +21,13 @@ def makechildren(nod, slutord):
                 combination_startord[i] = alfabet_letter #Ersätter det index som vi kollar igenom med alfabet_letter
                 combination_startord=''.join(combination_startord) #Så man går från list till str
                 if combination_startord in svenska and combination_startord not in gamla:
-                    child = ParentNode(combination_startord, nod)
+                    child = ParentNode(combination_startord, nod) #Skapar ett barn (objekt) med det nya ordet som pekar på dess parent-word.
                     q.enqueue(child)
                     gamla.addToTree(combination_startord) #Sparar vi tillagda ord
                     if combination_startord == slutord:
                         writechain(child)
                         sys.exit(0)
 
-#Något är feeel
 def writechain(child):
     if child.parent != None:
         writechain(child.parent)
@@ -45,14 +44,14 @@ def test():
             else:
                 svenska.addToTree(ordet)
 
-    startord = 'ute'
-    slutord = 'hit'
+    startord = 'söt'
+    slutord = 'sur'
 
-    q.enqueue(ParentNode(startord, None))
+    q.enqueue(ParentNode(startord, None)) #Lägger startordet högst upp i kön
 
     while not q.isEmpty():
-        nod = q.dequeue()
-        makechildren(nod, slutord)
+        nod = q.dequeue() #Översta ordet tas bort från kön
+        makechildren(nod, slutord) #Det bortagna ordet skickas med som parameter för att skapa dess barn.
 
     print('Det fanns ingen väg')
     sys.exit(1)

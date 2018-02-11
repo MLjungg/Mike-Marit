@@ -72,7 +72,7 @@ def test():
     svenska.addToTree('marsipantarta')
     svenska.addToTree('citron')
 
-    #Testkod förvänta else-satsen
+'''   #Testkod förvänta else-satsen
     if 'bajs' in svenska:
         print('Exist')
     else:
@@ -84,7 +84,7 @@ def test():
     else:
         print ('Something is totally wrong')
 
-    #svenska.printTree()
+    #svenska.printTree()'''
 
 def main():
     test()
