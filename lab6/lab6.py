@@ -112,7 +112,7 @@ def main():
     lintime = timeit.timeit(stmt = lambda: linsearch(thelist, testartist), number = 1000)
     print("Linesearch took", round(lintime, 4) , "seconds")
 
-    #Testcode           
+    #Testcode          
     #print(dictionary['TRMMMWA128F426B589']) #should get song tangle of aspens
     #print(thelist[4]) #Expected same result
 
@@ -129,6 +129,4 @@ def main():
     print("Searching in dictionary took", round(dicttime, 4) , "seconds")
     
 main()
-            
-#print(timeit.timeit(main, number=2 )) #Test of timeit
 
