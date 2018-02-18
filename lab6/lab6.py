@@ -77,7 +77,24 @@ def quicksortexecution(thelist, first, last):
     thelist[right] = temp
 
     return right #Return the splitvalue
-        
+
+#Search for value with binary search
+def binarysearch(thelist, artist):
+    first = 0
+    last = len(thelist)-1
+    found = False
+
+    while first <= last and not found:
+        middle = (first + last)//2 #Check the middle
+        if thelist[middle].artistname == artist:
+            found = True 
+        else:
+            if artist < thelist[middle].artistname:
+                last = middle - 1
+            else:
+                first = middle + 1
+    return found
+
 def main():
     filename = "unique_tracks.txt"
     # file_del2 = "/info/tilda/sang-artist-data.txt" #Used later in lab
@@ -87,16 +104,20 @@ def main():
     print("Number of elements =", n)
     last = thelist[n-1] #We want to search the whole list
     testartist = last.artistname
+    
 
     lintime = timeit.timeit(stmt = lambda: linsearch(thelist, testartist), number = 1000)
     print("Linesearch took", round(lintime, 4) , "seconds")
-    
-    sorting(thelist) #Sort the list with quicksort method
 
-    
     #Testcode           
     #print(dictionary['TRMMMWA128F426B589']) #should get song tangle of aspens
     #print(thelist[4]) #Expected same result
+    
+    sorting(thelist) #Sort the list with quicksort method
+    binarytime = timeit.timeit(stmt = lambda: binarysearch(thelist, testartist), number = 1000)
+    print("Binarysearch took", round(binarytime, 4) , "seconds")
+
+    
     
 main()
             
