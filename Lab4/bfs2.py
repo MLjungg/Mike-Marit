@@ -25,7 +25,6 @@ def makechildren(startord):
                     q.enqueue(combination_startord) # Lägger till barnen i kön
                     gamla.addToTree(combination_startord)  # Sparar vi tillagda ord
 
-
 def test():
     # Läser in fil och skapar ett binärtträd från ordlistan.
     with open("word3.txt", "r") as svenskfil:  # Öppna fil och döp till svenskfil
@@ -36,8 +35,9 @@ def test():
             else:
                 svenska.addToTree(ordet)
 
-    startord = 'blå'
-    slutord = 'röd'
+    startord = str(input('Ange startord: '))
+    #startord = 'blå'
+    slutord = str(input('Ange slutord:'))
     q.enqueue(startord) #Lägg till det första ordet i kön.
     found = False
 

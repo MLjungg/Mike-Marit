@@ -5,9 +5,6 @@ from bintreefile import Bintree
 svenska = Bintree() #Skapar tomt träd med namn svenska
 gamla = Bintree()
 
-#startord = str(input('Ange startord: ')) #Ska den finnas i ordlistan??
-#slutord = str(input('Ange slutord: '))
-
 # Skapar kombinationer av startordet utifrån alfabetet
 def makechildren(startord):
     alfabet = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','å','ä','ö']
@@ -42,6 +39,7 @@ def test():
             else:
                 svenska.addToTree(ordet)
 
+    # startord = str(input('Ange startord: ')) #Ska den finnas i ordlistan??
     startord='söt'
     makechildren(startord)
     
