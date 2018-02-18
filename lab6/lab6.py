@@ -95,6 +95,9 @@ def binarysearch(thelist, artist):
                 first = middle + 1
     return found
 
+def searchdict(dictionary, element):
+    return element in dictionary
+
 def main():
     filename = "unique_tracks.txt"
     # file_del2 = "/info/tilda/sang-artist-data.txt" #Used later in lab
@@ -112,12 +115,18 @@ def main():
     #Testcode           
     #print(dictionary['TRMMMWA128F426B589']) #should get song tangle of aspens
     #print(thelist[4]) #Expected same result
-    
-    sorting(thelist) #Sort the list with quicksort method
+
+    #Sort the list with quicksort method + take time
+    sortingtime = timeit.timeit(stmt = lambda: sorting(thelist), number = 1)
+    print("Quicksorting took", round(sortingtime, 4) , "seconds")
+
+    #Search with binarysearch + take time
     binarytime = timeit.timeit(stmt = lambda: binarysearch(thelist, testartist), number = 1000)
     print("Binarysearch took", round(binarytime, 4) , "seconds")
 
-    
+    #Search in dictonary + take time
+    dicttime = timeit.timeit(stmt = lambda: searchdict(dictionary, testartist), number = 1000)
+    print("Searching in dictionary took", round(dicttime, 4) , "seconds")
     
 main()
             
