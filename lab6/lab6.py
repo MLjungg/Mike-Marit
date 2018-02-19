@@ -33,18 +33,20 @@ class Song:
 
 
 # Function reads the file and saves the music-content as objects in a list and a dictionary.
-def readfile(filename):
+def readfile(filename, m):
     songlist = []
     songdict = {}
+    iter = 0
     with open(filename, "r") as tracks:
         for line in tracks:  # För varje rad i tracks
+            if iter == m:
+                return songlist, songdict
+
+            iter+=1
             song = line.strip().split("<SEP>")
             song = Song(song[0], song[1], song[2], song[3])  # Creates objects from file
             songlist.append(song)
             songdict[song.trackid] = song  # The dictionary has trackid as key and the name of the song as value.
-
-    return songlist, songdict
-
 
 # Function for linear searching. Check each element in list and compare.
 def linsearch(thelist, testartist):
@@ -52,7 +54,6 @@ def linsearch(thelist, testartist):
         if artist.artistname == testartist:  # Check if artist is found
             return True
     return False  # Artist is not included in list
-
 
 # Sort the list with quicksort method.
 def sorting(thelist):
@@ -121,14 +122,15 @@ def searchdict(dictionary, element):
 
 def main():
     filename = "unique_tracks.txt"
+    m=1000
 
-    thelist, dictionary = readfile(filename)
+    thelist, dictionary = readfile(filename, m)
     n = len(thelist)
     print("Number of elements =", n)
     last = thelist[n - 1]  # We want to search the whole list
     testartist = last.artistname
 
-    lintime = timeit.timeit(stmt=lambda: linsearch(thelist, testartist), number=1000)
+    lintime = timeit.timeit(stmt=lambda: linsearch(thelist, testartist), number=10000)
     print("Linesearch took", round(lintime, 4), "seconds")
 
     # Testcode
@@ -137,14 +139,14 @@ def main():
 
     # Sort the list with quicksort method + take time
     sortingtime = timeit.timeit(stmt=lambda: sorting(thelist), number=1)
-    print("Quicksorting took", round(sortingtime, 4), "seconds")
+    print("\nQuicksorting took", round(sortingtime, 4), "seconds")
 
     # Search with binarysearch + take time
     binarytime = timeit.timeit(stmt=lambda: binarysearch(thelist, testartist), number=1000)
-    print("Binarysearch took", round(binarytime, 4), "seconds")
+    print("\nBinarysearch took", round(binarytime, 4), "seconds")
 
     # Search in dictonary + take time
     dicttime = timeit.timeit(stmt=lambda: searchdict(dictionary, testartist), number=1000)
-    print("Searching in dictionary took", round(dicttime, 4), "seconds")
+    print("\nSearching in dictionary took", round(dicttime, 4), "seconds")
 
 main()
