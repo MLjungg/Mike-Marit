@@ -11,7 +11,7 @@ Vad skrivs ut av ett anrop av timeit: How long time the statement took to run.
 Intressant information:
 * Linear= The linear search is used to find an item in a list. The items do not have to be in order. To search for an item, start at the beginning of the list and continue searching until either the end of the list is reached or the item is found.
 * Quicksort= In quicksort you choose a pivot and sort the list based on weather its greater or smaller than the pivot - you seperate these two with a "wall". In case the pivot is bigger, you continue to check the next index. If it's smaller, you change place between that index and the value next to the "wall". When you have checked every element you place the pivot next to the wall - it is now in the right position. Timecomplexity is O(nlogn) and in worst case O(n^2).
-* Binary = To search for an item, look in the middle of the list and see if the number you want is in the middle, above the middle or below the middle. If it is in the middle, you have found the item. If it is higher than the middle value, then adjust the bottom of the list so that you search in a smaller list starting one above the middle of the list. If the number is lower than the middle value, then adjust the top of the list so that you search in a smaller list which has its highest position one less than the middle position.
+* Binarysearch = To search for an item, look in the middle of the list and see if the number you want is in the middle, above the middle or below the middle. If it is in the middle, you have found the item. If it is higher than the middle value, then adjust the bottom of the list so that you search in a smaller list starting one above the middle of the list. If the number is lower than the middle value, then adjust the top of the list so that you search in a smaller list which has its highest position one less than the middle position.
 '''
 
 
@@ -116,7 +116,7 @@ def binarysearch(thelist, artist):
 
 
 def searchdict(dictionary, element):
-    return element in dictionary
+    return element in dictionary #Builtin function in dictionary that search for the element
 
 
 def main():
