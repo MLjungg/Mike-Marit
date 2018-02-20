@@ -33,13 +33,13 @@ class Song:
 
 
 # Function reads the file and saves the music-content as objects in a list and a dictionary.
-def readfile(filename, m):
+def readfile(filename, lines):
     songlist = []
     songdict = {}
     iter = 0
     with open(filename, "r") as tracks:
         for line in tracks:  # För varje rad i tracks
-            if iter == m:
+            if iter == lines:
                 return songlist, songdict
 
             iter+=1
@@ -110,28 +110,29 @@ def binarysearch(thelist, artist):
             found = True
         else:
             if artist < thelist[middle].artistname:
-                last = middle - 1
+                last = middle - 1 # We have already checked this element.
             else:
                 first = middle + 1
     return found
 
 
 def searchdict(dictionary, element):
-    return element in dictionary #Builtin function in dictionary that search for the element
+    return element in dictionary  # Builtin function in dictionary that search for the element
 
 
 def main():
     filename = "unique_tracks.txt"
-    m=1000
 
-    thelist, dictionary = readfile(filename, m)
+    lines = 1000
+
+    thelist, dictionary = readfile(filename, lines)
     n = len(thelist)
     print("Number of elements =", n)
-    last = thelist[n - 1]  # We want to search the whole list
+    last = thelist[n - 1]  # The last object in list
     testartist = last.artistname
 
     lintime = timeit.timeit(stmt=lambda: linsearch(thelist, testartist), number=10000)
-    print("Linesearch took", round(lintime, 4), "seconds")
+    print("\nLinesearch took", round(lintime, 4), "seconds")
 
     # Testcode
     # print(dictionary['TRMMMWA128F426B589']) #should get song tangle of aspens
@@ -139,14 +140,14 @@ def main():
 
     # Sort the list with quicksort method + take time
     sortingtime = timeit.timeit(stmt=lambda: sorting(thelist), number=1)
-    print("\nQuicksorting took", round(sortingtime, 4), "seconds")
+    print("Quicksorting took", round(sortingtime, 4), "seconds")
 
     # Search with binarysearch + take time
     binarytime = timeit.timeit(stmt=lambda: binarysearch(thelist, testartist), number=1000)
-    print("\nBinarysearch took", round(binarytime, 4), "seconds")
+    print("Binarysearch took", round(binarytime, 4), "seconds")
 
     # Search in dictonary + take time
     dicttime = timeit.timeit(stmt=lambda: searchdict(dictionary, testartist), number=1000)
-    print("\nSearching in dictionary took", round(dicttime, 4), "seconds")
+    print("Searching in dictionary took", round(dicttime, 4), "seconds")
 
 main()

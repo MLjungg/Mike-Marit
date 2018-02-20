@@ -32,7 +32,7 @@ def main():
     filename = 'sang-artist-data.txt'
     thelist = readfile(filename)
     n = int(input('Vilket n för längsta låten?'))
-    songdict = linsearch(thelist,n)
+    songdict = linsearch(thelist, n)
     print(songdict[n-1].songtitle)
 
 main()
