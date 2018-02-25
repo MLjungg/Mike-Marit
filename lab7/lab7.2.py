@@ -31,7 +31,7 @@ class DictHash:
                 collisions += 1
                 temporaryCheck = temporaryCheck.next
 
-            else:  #När pekaren inte längre pekar på None placeras objektet där. Returnerar också ett värde på antalet krockar.
+            else:  #När pekaren inte längre pekar på ett objekt så placeras ett nytt objektet där.
                 temporaryCheck.next = value
                 collisions += 1
                 listOfCollisions.append(collisions)
