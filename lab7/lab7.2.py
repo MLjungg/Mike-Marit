@@ -1,5 +1,7 @@
 from Song import Song
 
+#TODO: Tror hashfunktionen inte ger en bra spridning. Behöver undersökas.
+
 class DictHash:
     def __init__(self, size): #The size of the hashtable should be larger than the amount of inserted elements. This way we avoid collusion.
         self.table = [None] * size
@@ -10,10 +12,6 @@ class DictHash:
             keyValue = keyValue*32 + ord(letter)
         index = keyValue % len(self.table)
         return index
-
-        #characterValue=[ord(c) for c in key]  # Ascii värde för varje bokstav
-        #keyValue = sum(characterValue)       # Ascii värde för hela ordet
-        #index = keyValue % len(self.table)   # Dividerar värdet med längden på listan -> resten blir index.
 
     def store(self, key, value, listOfCollisions):
         index = self.hashingFunction(key)
