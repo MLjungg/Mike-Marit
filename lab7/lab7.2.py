@@ -1,7 +1,5 @@
 from Song import Song
 
-#TODO: Ingen krockhantering införd. Dock finns en next-node där man kan koppla det till.
-
 class DictHash:
     def __init__(self, size): #The size of the hashtable should be larger than the amount of inserted elements. This way we avoid collusion.
         self.table = [None] * size
@@ -102,6 +100,5 @@ def main():
 
     dictionary.search('Faster Pussy cat')
     print ('Det sker ' + str(len(collisions)) + ' krockar, och som mest vid ett och samma index sker det ' + str(max(collisions)) + ' krockar')
-main()
 
-#index 3 är krock.
+main()
