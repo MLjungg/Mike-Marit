@@ -13,7 +13,7 @@ class DictHash:
         index = keyValue % len(self.table)
         return index
 
-    def store(self, key, value, listOfCollisions):
+    def store(self, key, value, listOfCollisions):  # Hashar in värden på rätt plats
         index = self.hashingFunction(key)
         collisions = 0
 
@@ -35,6 +35,7 @@ class DictHash:
                 temporaryCheck.next = value
                 collisions += 1
                 listOfCollisions.append(collisions)
+
 
     def search(self, key):
         index = self.hashingFunction(key)
@@ -79,22 +80,22 @@ def readfile(filename,lines):
             song = Song(song[0], song[1], song[2], song[3])  # Creates objects from file
             songlist.append(song)
 
-def loadfactor(songlist):
-    size = int(len(songlist)/0.50) #Loadfactor=0.50
+def loadfactor(songlist): #Loadfactor = 0.50 för att få tillräckligt med luft i listan.
+    size = int(len(songlist)/0.50)
     return size
 
 def main():
     filename = "unique_tracks.txt"
 
-    songlist = readfile(filename, 50000)  # 999 999 för att testa hela filen. Tar lång tid.
+    songlist = readfile(filename, 500000)  # 999 999 för att testa hela filen. Tar lång tid.
     size = loadfactor(songlist)
-    dictionary = DictHash(size) #Parametern ska bero på längden av songlist.
+    dictionary = DictHash(size) #Skapar min lista som jag kommer hasha in mina sånger i.
     collisions = [] #Förvarar antalet krockar för varje artist i en lista
 
     for i in range(0, len(songlist)): #Skapar noder och hashar in dem i en lista
-        artistname = songlist[i].artistname
+        artistname = songlist[i].artistname #sparar undan key
         node = HashNode(artistname, songlist[i], None) #Varje nod håller i artistnamn, all information om artisten och pekar på nästa nod (krock).
-        dictionary.store(node.key, node, collisions)  # [artistname, object]
+        dictionary.store(node.key, node, collisions)  # [artistname, object, antalet kollisioner]
 
     dictionary.search('Faster Pussy cat')
     print ('Det sker ' + str(len(collisions)) + ' krockar, och som mest vid ett och samma index sker det ' + str(max(collisions)) + ' krockar')
