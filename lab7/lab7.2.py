@@ -33,19 +33,19 @@ class Hashtable:
                 print(self.table[index].first.value)
         else:
             temporaryCheck = self.table[index].first
-            while temporaryCheck.next != None:
+            while temporaryCheck.key != None:
                 try:
                     if temporaryCheck.key == key:
-                        print(temporaryCheck.Value)
+                        print(temporaryCheck.value)
 
                     else:
-                        temporaryCheck.next = temporaryCheck
+                        temporaryCheck = temporaryCheck.next
 
                 except AttributeError:
                     print(key + 'finns inte i listan')
 
             else:
-                raise KeyError(Key + 'finns inte i listan')
+                raise KeyError(key + 'finns inte i listan')
 
 # --------------------------------------------------------------
 
