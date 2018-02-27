@@ -8,9 +8,3 @@ class Song:
     def __str__(self):
         return str(self.trackid) + ': ' + str(self.songid) + ': ' + str(self.artistname) + ': ' + str(self.songtitle)
 
-    def __lt__(self, other):
-        return self.artistname < other.artistname
-
-    def __le__(self, other):
-        return self.artistname <= other.artistname
-

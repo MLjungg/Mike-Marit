@@ -66,7 +66,7 @@ def loadfactor(songlist): #Loadfactor = 0.50 för att få tillräckligt med luft
 def main():
     filename = "unique_tracks.txt"
 
-    songlist = readfile(filename)  # 999 999 för att testa hela filen. Tar lång tid.
+    songlist = readfile(filename)
     size = loadfactor(songlist)
     hashtable = Hashtable(size) #Skapar min lista som jag kommer hasha in mina sånger i.
     collisionCounter = 0
