@@ -1,4 +1,47 @@
-from Song import Song
+from LinkedQFile import *
+
+class Hashtable:
+    def __init__(self, size): #The size of the hashtable should be larger than the amount of inserted elements. This way we avoid collusion.
+        self.table = [None] * size
+
+    def hashingFunction(self, key):
+        keyValue = 0
+        for letter in key:
+            keyValue = keyValue*32 + ord(letter)
+        index = keyValue % len(self.table)
+        return index
+
+    def store(self, hashnode):  # Hashar in min hashnode
+        index = self.hashingFunction(hashnode.key)
+
+        if self.table[index] == None:
+            self.table[index] = LinkedQ()  # skapar en länkadlista på platsen
+            self.table[index].enqueue(hashnode)
+        else:
+            self.table[index].enqueue(hashnode)
+
+    def search(self, key):
+        index = self.hashingFunction(key)
+        if self.table[index] == None:
+            raise KeyError(key + ' finns inte i listan')
+
+        elif self.table[index].first.key == key:
+                return(self.table[index].first.value)
+        else:
+            temporaryCheck = self.table[index].first
+            while temporaryCheck.key != None:
+                try:
+                    if temporaryCheck.key == key:
+                        return (temporaryCheck.value)
+
+                    else:
+                        temporaryCheck = temporaryCheck.next
+
+                except AttributeError:
+                    print(key + 'finns inte i listan')
+
+            else:
+                raise KeyError(key + 'finns inte i listan')
 
 class Atom:
 
@@ -134,12 +177,13 @@ def lagraHashtabell(atomlista):
     print("\n-------------------------------------------------------")
     print(" * Lagrar listans atomer i hashtabell...")
     antalElement = len(atomlista)
-    hashtabell = Hashtabell(antalElement)
+    hashtable = Hashtable(antalElement)
     for element in atomlista:
-        namn, vikt = element.split()
+        namn, vikt = element.split() #delar upp listan efter namn och vikt
         nyAtom = Atom(namn, float(vikt))
-        hashtabell.put(namn, nyAtom)
-    return hashtabell
+        hashNode = HashNode(namn, nyAtom, None)
+        hashtable.store(hashNode)
+    return hashtable
 
 def allaAtomerFinns(hashtabell, atomlista):
     """Kan man hitta alla atomer i hashtabellen?"""
@@ -151,7 +195,7 @@ def allaAtomerFinns(hashtabell, atomlista):
         namn, vikt = kontrollAtom.split()
         vikt = float(vikt)
         try:
-            hashadAtom = hashtabell.get(namn)
+            hashadAtom = hashtabell.search(namn)
             if hashadAtom.vikt != vikt:
                 print(namn, "har fel vikt.")
             else:
@@ -168,14 +212,14 @@ def knasAtomFinnsInte(hashtabell):
     print("\n-------------------------------------------------------")
     print( " * Testar att hitta en atom som inte finns:", knasnamn, "...")
     try:
-        atom = hashtabell.get(knasnamn)
+        atom = hashtabell.search(knasnamn)
         print(knasnamn, "fanns med i hashtabellen.")
         return False
     except KeyError:
         print(knasnamn, "fanns inte med i hashtabellen.")
         return True
 
-atomlista = skapaAtomlista()
+atomlista = skapaAtomlista() #
 hashtabell = lagraHashtabell(atomlista)
 allaAtomerFinns(hashtabell, atomlista)    
 knasAtomFinnsInte(hashtabell)

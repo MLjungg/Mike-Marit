@@ -1,7 +1,5 @@
 from Song import Song
 
-#TODO: testkörning 2
-
 class Hashtable:
     def __init__(self, size): #The size of the hashtable should be larger than the amount of inserted elements. This way we avoid collusion.
         self.table = [None] * size
@@ -38,24 +36,18 @@ class Hashtable:
 
     def search(self, key):
         index = self.hashingFunction(key)
-        temporaryCheck = self.table[index].next
-        try:
+        if self.table[index] != None:
             if self.table[index].key == key: #Vi kollar om det översta objektet i index är key.
                 print(self.table[index].value)
 
             else: #Nu kollar vi om objektet finns länkat under istället
+                temporaryCheck = self.table[index].next
                 while self.table[index].next != None:
                      if temporaryCheck.key == key:
                          print(temporaryCheck.value)
                          break
                      else:
                          temporaryCheck = temporaryCheck.next
-
-                else:
-                    print(key + ' doesnt exist in list')
-
-        except AttributeError:
-            print(key + ' Existerar inte')
 
 #  ------------
 
@@ -67,17 +59,14 @@ class HashNode:
 
 #  ------------
 
-def readfile(filename,lines):
+def readfile(filename):
     songlist = []
-    iter=0
     with open(filename, "r") as tracks:
         for line in tracks:  # För varje rad i tracks
-            if iter == lines:
-                return songlist
-            iter += 1
             song = line.strip().split("<SEP>")
             song = Song(song[0], song[1], song[2], song[3])  # Creates objects from file
             songlist.append(song)
+    return songlist
 
 def loadfactor(songlist): #Loadfactor = 0.50 för att få tillräckligt med luft i listan.
     size = int(len(songlist)/0.50)
@@ -86,9 +75,9 @@ def loadfactor(songlist): #Loadfactor = 0.50 för att få tillräckligt med luft
 def main():
     filename = "unique_tracks.txt"
 
-    songlist = readfile(filename, 50000)  # 999 999 för att testa hela filen. Tar lång tid.
+    songlist = readfile(filename)  # 999 999 för att testa hela filen. Tar lång tid.
     size = loadfactor(songlist)
-    dictionary = hashtable(size) #Skapar min lista som jag kommer hasha in mina sånger i.
+    dictionary = Hashtable(size) #Skapar min lista som jag kommer hasha in mina sånger i.
     collisions = [] #Förvarar antalet krockar för varje artist i en lista
 
     for i in range(0, len(songlist)): #Skapar noder och hashar in dem i en lista
@@ -96,8 +85,6 @@ def main():
         node = HashNode(trackid, songlist[i], None)  # Varje nod håller i artistnamn, all information om artisten och pekar på nästa nod (krock).
         dictionary.store(node.key, node, collisions)  # [artistname, object, antalet kollisioner]
 
-    dictionary.search('Faster Pussy cat')
     print ('Det sker ' + str(len(collisions)) + ' krockar, och som mest vid ett och samma index sker det ' + str(max(collisions)) + ' krockar')
-    print(trackid)
 
 main()

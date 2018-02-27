@@ -1,8 +1,7 @@
 from Song import Song
+from LinkedQFile import *
 
-#TODO: Tror hashfunktionen inte ger en bra spridning. Behöver undersökas.
-
-class DictHash:
+class Hashtable:
     def __init__(self, size): #The size of the hashtable should be larger than the amount of inserted elements. This way we avoid collusion.
         self.table = [None] * size
 
@@ -13,91 +12,70 @@ class DictHash:
         index = keyValue % len(self.table)
         return index
 
-    def store(self, key, value, listOfCollisions):  # Hashar in värden på rätt plats
-        index = self.hashingFunction(key)
-        collisions = 0
+    def store(self, hashnode, collisionCounter):  # Hashar in min hashnode
+        index = self.hashingFunction(hashnode.key)
 
-        if self.table[index] == None: #Om platsen i listan är tom.
-            self.table[index] = value
-
-        elif self.table[index].next == None: #Om pekaren är tom placeras nästa objekt där. En kollision har inträffat.
-            collisions = 1
-            listOfCollisions.append(collisions)
-            self.table[index].next = value
-
+        if self.table[index] == None:
+            self.table[index] = LinkedQ()  # skapar en länkadlista på platsen
+            self.table[index].enqueue(hashnode)
+            return collisionCounter
         else:
-            temporaryCheck = self.table[index].next
-            while temporaryCheck.next != None: #Så länge pekaren har ett objekt
-                collisions += 1
-                temporaryCheck = temporaryCheck.next
-
-            else:  #När pekaren inte längre pekar på ett objekt så placeras ett nytt objektet där.
-                temporaryCheck.next = value
-                collisions += 1
-                listOfCollisions.append(collisions)
-
+            self.table[index].enqueue(hashnode)
+            collisionCounter += 1
+            return collisionCounter
 
     def search(self, key):
         index = self.hashingFunction(key)
-        temporaryCheck = self.table[index].next
-        try:
-            if self.table[index].key == key: #Vi kollar om det översta objektet i index är key.
-                print(self.table[index].value)
+        if self.table[index] == None:
+            raise KeyError(key + ' finns inte i listan')
 
-            else: #Nu kollar vi om objektet finns länkat under istället
-                while self.table[index].next != None:
-                     if temporaryCheck.key == key:
-                         print(temporaryCheck.value)
-                         break
-                     else:
-                         temporaryCheck = temporaryCheck.next
+        elif self.table[index].first.key == key:
+                print(self.table[index].first.value)
+        else:
+            temporaryCheck = self.table[index].first
+            while temporaryCheck.next != None:
+                try:
+                    if temporaryCheck.key == key:
+                        print(temporaryCheck.Value)
 
-                else:
-                    print(key + ' doesnt exist in list')
+                    else:
+                        temporaryCheck.next = temporaryCheck
 
-        except AttributeError:
-            print(key + ' Existerar inte')
+                except AttributeError:
+                    print(key + 'finns inte i listan')
 
-#  ------------
+            else:
+                raise KeyError(Key + 'finns inte i listan')
 
-class HashNode:
-    def __init__(self, key, value, next):
-        self.key = key
-        self.value = value
-        self.next = next
+# --------------------------------------------------------------
 
-#  ------------
-
-def readfile(filename,lines):
+def readfile(filename):
     songlist = []
-    iter=0
     with open(filename, "r") as tracks:
         for line in tracks:  # För varje rad i tracks
-            if iter == lines:
-                return songlist
-            iter += 1
             song = line.strip().split("<SEP>")
             song = Song(song[0], song[1], song[2], song[3])  # Creates objects from file
             songlist.append(song)
+    return songlist
 
 def loadfactor(songlist): #Loadfactor = 0.50 för att få tillräckligt med luft i listan.
     size = int(len(songlist)/0.50)
     return size
 
+# --------------------------------------------------------------
 def main():
     filename = "unique_tracks.txt"
 
-    songlist = readfile(filename, 500000)  # 999 999 för att testa hela filen. Tar lång tid.
+    songlist = readfile(filename)  # 999 999 för att testa hela filen. Tar lång tid.
     size = loadfactor(songlist)
-    dictionary = DictHash(size) #Skapar min lista som jag kommer hasha in mina sånger i.
-    collisions = [] #Förvarar antalet krockar för varje artist i en lista
-
+    hashtable = Hashtable(size) #Skapar min lista som jag kommer hasha in mina sånger i.
+    collisionCounter = 0
     for i in range(0, len(songlist)): #Skapar noder och hashar in dem i en lista
-        artistname = songlist[i].artistname #sparar undan key
-        node = HashNode(artistname, songlist[i], None) #Varje nod håller i artistnamn, all information om artisten och pekar på nästa nod (krock).
-        dictionary.store(node.key, node, collisions)  # [artistname, object, antalet kollisioner]
+        trackid = (songlist[i].trackid)  # sparar undan key
+        hashnode = HashNode(trackid, songlist[i], None)  # Varje nod håller i trackID, all information om artisten och pekar på nästa nod (krock).
+        collisionCounter = hashtable.store(hashnode, collisionCounter)  #Skickar in min hashnode som ska placeras i hashtable
 
-    dictionary.search('Faster Pussy cat')
-    print ('Det sker ' + str(len(collisions)) + ' krockar, och som mest vid ett och samma index sker det ' + str(max(collisions)) + ' krockar')
+    hashtable.search('TRMMMXI128F4285A3F')
+    print('Det sker ' + str(collisionCounter) + ' kollisioner')
 
 main()
