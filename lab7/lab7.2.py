@@ -44,8 +44,8 @@ class Hashtable:
                 except AttributeError:
                     print(key + 'finns inte i listan')
 
-            else:
-                raise KeyError(key + 'finns inte i listan')
+            #else:
+#                raise KeyError(key + 'finns inte i listan')
 
 # --------------------------------------------------------------
 
@@ -71,11 +71,12 @@ def main():
     hashtable = Hashtable(size) #Skapar min lista som jag kommer hasha in mina sånger i.
     collisionCounter = 0
     for i in range(0, len(songlist)): #Skapar noder och hashar in dem i en lista
-        trackid = (songlist[i].trackid)  # sparar undan key
+        trackid = songlist[i].trackid  # sparar undan key
         hashnode = HashNode(trackid, songlist[i], None)  # Varje nod håller i trackID, all information om artisten och pekar på nästa nod (krock).
         collisionCounter = hashtable.store(hashnode, collisionCounter)  #Skickar in min hashnode som ska placeras i hashtable
 
     hashtable.search('TRMMMXI128F4285A3F')
+
     print('Det sker ' + str(collisionCounter) + ' kollisioner')
 
 main()
