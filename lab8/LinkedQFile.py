@@ -28,3 +28,6 @@ class LinkedQ:
 
     def isEmpty(self):
         return self.length == 0
+
+    def peek(self):
+        return self.first.value

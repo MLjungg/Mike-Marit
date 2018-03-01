@@ -16,8 +16,10 @@ def checkMoleculeSyntax():
     checkNumbers()
 
 #Function that checks if first letter is uppercase and if containing two that second is lowercase.
-def checkLetters():
-    return True
+def checkLetters(molecule):
+    length = 1
+    while length >= 2 and q.isEmpty():
+        letter = q.peek()
 
 #Function that checks if charachter is an int and bigger than 1.
 def checkNumbers():
