@@ -17,7 +17,7 @@ class SyntaxTest(unittest.TestCase):
 
     def testNoncorrectAtomnumber(self):
         # Testing a non-correct atomletter according to the rules.
-        self.assertEqual(checkSyntax("Cr0"), 'Not an acceptable number: 0')
+        self.assertEqual(checkSyntax("Cr0"), 'First number is too small: 0')
         self.assertEqual(checkSyntax("Cr-"), 'Not an integer: -')
 
 

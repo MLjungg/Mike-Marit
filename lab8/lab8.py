@@ -42,14 +42,19 @@ def checkLetters(molecule):
 
 # Function that checks if charachter is an int and bigger than 1.
 def checkNumbers(molecule):
+    firstIteration = 1
     while not molecule.isEmpty():
         charachter = molecule.peek()
         try:  # Check if it's an int and then execute check bigger than 1
             number = int(charachter)
-            if number > 1:
-                molecule.dequeue()
+            if firstIteration == 1:
+                if number > 1:
+                    firstIteration += 1
+                    molecule.dequeue()
+                else:
+                    raise GrammarError('First number is too small: ' + str(charachter))
             else:
-                raise GrammarError('Not an acceptable number: ' + str(charachter))
+                molecule.dequeue()
 
         except ValueError:  # If not an int
             raise GrammarError('Not an integer: ' + str(charachter))
@@ -77,7 +82,7 @@ def checkSyntax(molecule):
 
 
 def main():
-    molecule = "Ab-1"
+    molecule = "Ab02"
     result = checkSyntax(molecule)
     print(result)
 
