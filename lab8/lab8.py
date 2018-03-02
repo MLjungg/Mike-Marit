@@ -24,7 +24,7 @@ def checkLetters(molecule):
         length += 1
             
     elif length == 1:
-        raise GrammarError('No upper case: ' + str(letter))
+        raise GrammarError('Not upper case: ' + str(letter))
 
     letter = molecule.peek()
     if letter.isalpha() and letter.islower() and length == 2: #Check if next is alphabetical and lower case
@@ -32,7 +32,7 @@ def checkLetters(molecule):
         length += 1
             
     elif length == 2:
-        raise GrammarError('No lower case ' + str(letter))
+        raise GrammarError('Not lower case ' + str(letter))
 
     return
             
@@ -48,7 +48,8 @@ def checkNumbers(molecule):
                 raise GrammarError('Not an acceptable number: ' + str(charachter))
         
         except ValueError: #If not an int
-            raise GrammarError('No integer: ' + str(charachter))
+            raise GrammarError('Not an integer: ' + str(charachter))
+
     return
 
 #Function that adds a molecule to list
@@ -69,7 +70,7 @@ def checkSyntax(molecule):
         return str(incorrect)        
 
 def main():
-    molecule = 'ChCh'
+    molecule = "Ch4"
     result = checkSyntax(molecule)
     print(result)
     
