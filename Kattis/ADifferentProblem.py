@@ -1,8 +1,6 @@
 import sys
 
-
-filename = sample.in
-for row in sa:
+for row in sys.stdin:
     ab = row.split()
     a = int(ab[0])
     b = int(ab[1])
