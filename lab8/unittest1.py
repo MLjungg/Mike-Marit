@@ -12,8 +12,8 @@ class SyntaxTest(unittest.TestCase):
 
     def testNoncorrectAtomletter(self):
         # Testing a non-correct atomletter according to the rules.
-        self.assertEqual(checkSyntax("cr6"), 'Not an alphabetic character or not upper case: c')
-        self.assertEqual(checkSyntax("CH9"), 'Not an alphabetic character or not lower case: H')
+        self.assertEqual(checkSyntax("cr6"), 'Not upper case: c')
+        self.assertEqual(checkSyntax("CH9"), 'Not lower case: H')
 
     def testNoncorrectAtomnumber(self):
         # Testing a non-correct atomletter according to the rules.

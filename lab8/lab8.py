@@ -20,22 +20,18 @@ def checkMoleculeSyntax(molecule):
 
 # Function that checks if first letter is uppercase and if containing two that second is lowercase.
 def checkLetters(molecule):
-    length = 1  # Start at first letter
     letter = molecule.peek()
-    if letter.isupper() and length == 1:  # Check if uppercase, if true continue to next letter
+    if letter.isupper():  # Check if uppercase, if true continue to next letter
         molecule.dequeue()
-        length += 1
-
-    elif length == 1:
-        raise GrammarError('Not an alphabetic character or not upper case: ' + str(letter))
+    else:
+        raise GrammarError('Not upper case: ' + str(letter))
 
     letter = molecule.peek()
-    if letter.isalpha() and letter.islower() and length == 2:  # Check if next is alphabetical and lower case
-        molecule.dequeue()
-        length += 1
-
-    elif length == 2:
-        raise GrammarError('Not an alphabetic character or not lower case: ' + str(letter))
+    if letter.isalpha():
+        if letter.islower():  # Check if next is alphabetical and lower case
+            molecule.dequeue()
+        else:
+            raise GrammarError('Not lower case: ' + str(letter))
 
     return
 
@@ -82,7 +78,7 @@ def checkSyntax(molecule):
 
 
 def main():
-    molecule = "Ab02"
+    molecule = "H20"
     result = checkSyntax(molecule)
     print(result)
 
