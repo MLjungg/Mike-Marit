@@ -1,8 +1,7 @@
-class Node: #För att hashanoder behövs det här.
-    def __init__(self, key, value, next):
-        self.key = key
+class Node:
+    def __init__(self, value):
         self.value = value
-        self.next = next
+        self.next = None
 
 class LinkedQ:
     def __init__(self):
@@ -10,19 +9,20 @@ class LinkedQ:
         self.last = None
         self.length = 0
 
-    def enqueue(self, node):
+    def enqueue(self,x):
+        newNode = Node(x)
         self.length += 1
         if self.first == None:
-            self.first = node #Finns endast ett kort
-            self.last = node
+            self.first = newNode
+            self.last = newNode
         else:
-            self.last.next = node #Det tidigare sista kortet lankar till den nya sista kortet
-            self.last = node #Nu blir det sista kortet new
+            self.last.next = newNode
+            self.last = newNode
 
     def dequeue(self):
         if self.length > 0:
-            value = self.first.value # Save the first cards value for later print
-            self.first = self.first.next #Second card is now first
+            value = self.first.value
+            self.first = self.first.next
             self.length = self.length - 1
             return value
 
@@ -30,4 +30,4 @@ class LinkedQ:
         return self.length == 0
 
     def peek(self):
-        return self.first.key
+        return self.first.value

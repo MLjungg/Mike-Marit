@@ -1,4 +1,5 @@
-from hashAtoms import *
+from bintreefile import *
+from LinkedQFile import *
 
 # <formel>::= <mol> \n
 # <mol>   ::= <group> | <group><mol>
@@ -22,49 +23,63 @@ from hashAtoms import *
 class GrammarError(Exception):
     pass
 
-
 # Function for checking if molecule's syntax is correct
-def checkMoleculeSyntax(molecule):
-    checkLetters(molecule)
-    checkNumbers(molecule)
+def readformula(molecule):
+    molecule = addMolecule(molecule)
+    readmol(molecule)
 
-# Function that checks if first letter is uppercase and if containing two that second is lowercase.
-def checkLetters(molecule):
-    letter = molecule.peek()
-    if letter.isupper():  # Check if uppercase, if true continue to next letter
+def readmol(molecule):
+    readgroup(molecule)
+    if not molecule.isEmpty():
+        readmol(molecule)
+
+def readgroup(molecule):
+    if molecule.peek() == '(':
         molecule.dequeue()
-    else:
-        raise GrammarError('Not upper case: ' + str(letter))
-
-    letter = molecule.peek()
-    if letter.isalpha():
-        if letter.islower():  # Check if next is alphabetical and lower case
+        readmol(molecule)
+        if molecule.peek() == ')':
             molecule.dequeue()
+            if molecule.peek().isnumeric():
+                readnumbers(molecule)
+            else:
+                raise GrammarError('Saknad siffra vid radslutet') #+sista delen av molekylen
         else:
-            raise GrammarError('Not lower case: ' + str(letter))
-
-    return
+            raise GrammarError('Saknad högerparentes vid radslutet')
+    else:
+        readatom(molecule)
+        if (not molecule.isEmpty()) and molecule.peek().isnumeric() :
+            readnumbers(molecule)
 
 # Function that checks if charachter is an int and bigger than 1.
-def checkNumbers(molecule):
+def readnumbers(molecule):
     firstIteration = 1
-    while not molecule.isEmpty():
-        charachter = molecule.peek()
-        try:  # Check if it's an int and then execute check bigger than 1
-            number = int(charachter)
-            if firstIteration == 1:
-                if number > 1:
+    while (not molecule.isEmpty()) and molecule.peek().isnumeric():
+        number = int(molecule.dequeue())
+        if firstIteration == 1:
+            if number == 1:
+                if not molecule.isEmpty() and molecule.peek().isnumeric():
                     firstIteration += 1
-                    molecule.dequeue()
                 else:
-                    raise GrammarError('First number is too small: ' + str(charachter))
+                    raise GrammarError('För litet tal vid radslutet ') #Glöm ej str-func
+            elif number > 1:
+                firstIteration += 1
             else:
-                molecule.dequeue()
+                raise GrammarError('För litet tal vid radslutet ') #Glöm ej str-func
 
-        except ValueError:  # If not an int
-            raise GrammarError('Not an integer: ' + str(charachter))
+def readatom(molecule):
+    firstletter = molecule.dequeue()
+    if not firstletter.isupper():
+        raise GrammarError('Saknad stor bokstav vid radslutet') #+radslut
 
-    return
+    atom = firstletter
+    if not molecule.isEmpty():
+        secondletter = molecule.peek()
+        if secondletter.isalpha() and secondletter.islower():
+            molecule.dequeue()
+            atom += secondletter
+
+    if not atom in binaryatomlist:
+        raise GrammarError('Okänd atom vid radslutet') #+radslut
 
 
 # Function that adds a molecule to list
@@ -73,25 +88,42 @@ def addMolecule(molecule):
     moleculeList = list(molecule)
     molecule = LinkedQ()
     for charachter in moleculeList:
-        node = Node(charachter, None, None)
-        molecule.enqueue(node)
+        molecule.enqueue(charachter)
     return molecule
 
-
-def checkSyntax(molecule):
-    molecule = addMolecule(molecule)
+def readfile(file):
+    atomlist = []
+    with open(file,'r') as atomfile:
+        for line in atomfile:
+            atom = line.strip().split(' ')
+            atomlist = atom
+    return atomlist
+            
+def binarysort(atomlist):
+    binaryatomlist = Bintree()
+    for atom in atomlist:
+        binaryatomlist.addToTree(atom)
+    return binaryatomlist
+    
+def main():
+    filename = 'atoms.txt'
+    atomlist = readfile(filename)
+    global binaryatomlist
+    binaryatomlist = binarysort(atomlist)
+    molecule = 'H10'
     try:
-        checkMoleculeSyntax(molecule)
-        return 'Woop, woop, following the syntax'
-
+        readformula(molecule)
+        print('Woop, woop, following the syntax')
     except GrammarError as incorrect:
-        return str(incorrect)
+        print(str(incorrect))
 
-
-def main(molecule):
-    atomLista= skapaAtomlista()
-    hashtabell = lagraHashtabell(atomLista) #Fungerar hit. Det här kommer behövas för att undersöka om det är en verklig atom.
-    addMolecule(molecule)
+        
+    
+    
+    
+    #atomLista= skapaAtomlista()
+    #hashtabell = lagraHashtabell(atomLista) #Fungerar hit. Det här kommer behövas för att undersöka om det är en verklig atom.
+    #addMolecule(molecule)
 
     #result = checkSyntax(molecule)
     #print(result)
@@ -100,8 +132,8 @@ def main(molecule):
 if __name__ == '__main__':
     # for row in sys.stdin:
     #	row = row.strip()
-
-    rowlist = ['Na']
-    for row in rowlist:
-        if row != "#":
-            main(row)
+    main()
+#    rowlist = ['Na']
+#    for row in rowlist:
+#        if row != "#":
+#            main(row)
