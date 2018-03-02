@@ -1,0 +1,3 @@
+from hashAtoms import *
+
+HashNode()
