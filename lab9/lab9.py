@@ -20,7 +20,6 @@ import sys
  som fångas i huvudprogrammet och där skrivs hela resten av indataraden ut.'''
 
 #--------------------------------------------------------------------------------------------------
-openlefts = 0
 
 class GrammarError(Exception):
     pass
@@ -77,10 +76,10 @@ def readnumbers(molecule):
                 raise GrammarError('För litet tal vid radslutet ' + str(molecule)) #Glöm ej str-func
 
 def readatom(molecule):
-    firstletter = molecule.dequeue()
+    firstletter = molecule.peek()
     if not firstletter.isupper():
         raise GrammarError('Saknad stor bokstav vid radslutet ' + str(molecule)) #+radslut
-
+    molecule.dequeue()
     atom = firstletter
     if not molecule.isEmpty():
         secondletter = molecule.peek()
@@ -143,7 +142,8 @@ if __name__ == '__main__':
 	for row in sys.stdin:
 		row = row.strip()
 		if row != "#":
-			main(row)
+                        openlefts = 0
+                        main(row)
 		else:
 			break
 
