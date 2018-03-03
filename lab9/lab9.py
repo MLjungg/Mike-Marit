@@ -1,5 +1,6 @@
 from bintreefile import *
 from LinkedQFile import *
+import sys
 
 # <formel>::= <mol> \n
 # <mol>   ::= <group> | <group><mol>
@@ -19,6 +20,7 @@ from LinkedQFile import *
  som fångas i huvudprogrammet och där skrivs hela resten av indataraden ut.'''
 
 #--------------------------------------------------------------------------------------------------
+openlefts = 0
 
 class GrammarError(Exception):
     pass
@@ -32,19 +34,27 @@ def readmol(molecule):
     readgroup(molecule)
     if not molecule.isEmpty():
         readmol(molecule)
+    else:
+        if openlefts > 0:
+            raise GrammarError('Saknad högerparentes vid radslutet ' + str(molecule))
 
 def readgroup(molecule):
     if molecule.peek() == '(':
+        global openlefts
+        openlefts += 1
         molecule.dequeue()
         readmol(molecule)
-        if molecule.peek() == ')':
+    elif molecule.peek() == ')':
+        if openlefts > 0:
+            openlefts -= 1
             molecule.dequeue()
             if molecule.peek().isnumeric():
                 readnumbers(molecule)
             else:
-                raise GrammarError('Saknad siffra vid radslutet') #+sista delen av molekylen
+                raise GrammarError('Saknad siffra vid radslutet ' + str(molecule)) #+sista delen av molekylen
         else:
-            raise GrammarError('Saknad högerparentes vid radslutet')
+            raise GrammarError('Felaktig gruppstart vid radslutet ' + str(molecule)) #+sista delen av molekylen
+            
     else:
         readatom(molecule)
         if (not molecule.isEmpty()) and molecule.peek().isnumeric() :
@@ -60,16 +70,16 @@ def readnumbers(molecule):
                 if not molecule.isEmpty() and molecule.peek().isnumeric():
                     firstIteration += 1
                 else:
-                    raise GrammarError('För litet tal vid radslutet ') #Glöm ej str-func
+                    raise GrammarError('För litet tal vid radslutet ' + str(molecule)) #Glöm ej str-func
             elif number > 1:
                 firstIteration += 1
             else:
-                raise GrammarError('För litet tal vid radslutet ') #Glöm ej str-func
+                raise GrammarError('För litet tal vid radslutet ' + str(molecule)) #Glöm ej str-func
 
 def readatom(molecule):
     firstletter = molecule.dequeue()
     if not firstletter.isupper():
-        raise GrammarError('Saknad stor bokstav vid radslutet') #+radslut
+        raise GrammarError('Saknad stor bokstav vid radslutet ' + str(molecule)) #+radslut
 
     atom = firstletter
     if not molecule.isEmpty():
@@ -79,7 +89,7 @@ def readatom(molecule):
             atom += secondletter
 
     if not atom in binaryatomlist:
-        raise GrammarError('Okänd atom vid radslutet') #+radslut
+        raise GrammarError('Okänd atom vid radslutet ' + str(molecule)) #+radslut
 
 
 # Function that adds a molecule to list
@@ -105,20 +115,20 @@ def binarysort(atomlist):
         binaryatomlist.addToTree(atom)
     return binaryatomlist
     
-def main():
+def main(molecule):
     filename = 'atoms.txt'
     atomlist = readfile(filename)
     global binaryatomlist
     binaryatomlist = binarysort(atomlist)
-    molecule = 'H10'
+
     try:
         readformula(molecule)
-        print('Woop, woop, following the syntax')
+        print('Formeln är syntaktiskt korrekt')
     except GrammarError as incorrect:
         print(str(incorrect))
 
-        
     
+
     
     
     #atomLista= skapaAtomlista()
@@ -130,10 +140,11 @@ def main():
 
 
 if __name__ == '__main__':
-    # for row in sys.stdin:
-    #	row = row.strip()
-    main()
-#    rowlist = ['Na']
-#    for row in rowlist:
-#        if row != "#":
-#            main(row)
+	for row in sys.stdin:
+		row = row.strip()
+		if row != "#":
+			main(row)
+		else:
+			break
+
+

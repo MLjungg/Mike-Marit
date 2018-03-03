@@ -9,6 +9,14 @@ class LinkedQ:
         self.last = None
         self.length = 0
 
+    def __str__(self):
+        output = ''
+        node = self.first
+        while node != None:
+            output += str(node.value)
+            node = node.next
+        return output
+
     def enqueue(self,x):
         newNode = Node(x)
         self.length += 1
