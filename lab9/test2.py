@@ -1,6 +1,6 @@
 import unittest
 
-from lab9 import *
+from lab9_2 import *
 
 class SyntaxTest(unittest.TestCase):
 
