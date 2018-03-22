@@ -17,7 +17,7 @@ class LinkedQ:
             node = node.next
         return output
 
-    def enqueue(self,x):
+    def enqueue(self, x):
         newNode = Node(x)
         self.length += 1
         if self.first == None:
