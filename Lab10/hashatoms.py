@@ -1,5 +1,47 @@
-#Testar klassen Hashtabell i filen hashfil.py
-from hashfil import Hashtabell
+from LinkedQFileHash import *
+
+class Hashtable:
+    def __init__(self, size): #The size of the hashtable should be larger than the amount of inserted elements. This way we avoid collusion.
+        self.table = [None] * size
+
+    def hashingFunction(self, key):
+        keyValue = 0
+        for letter in key:
+            keyValue = keyValue*32 + ord(letter)
+        index = keyValue % len(self.table)
+        return index
+
+    def store(self, hashnode):  # Hashar in min hashnode
+        index = self.hashingFunction(hashnode.key)
+
+        if self.table[index] == None:
+            self.table[index] = LinkedQ2()  # skapar en länkadlista på platsen
+            self.table[index].enqueue(hashnode)
+        else:
+            self.table[index].enqueue(hashnode)
+
+    def search(self, key):
+        index = self.hashingFunction(key)
+        if self.table[index] == None:
+            raise KeyError(key + ' finns inte i listan')
+
+        elif self.table[index].first.key == key:
+                return(self.table[index].first.value)
+        else:
+            temporaryCheck = self.table[index].first
+            while temporaryCheck.key != None:
+                try:
+                    if temporaryCheck.key == key:
+                        return (temporaryCheck.value)
+
+                    else:
+                        temporaryCheck = temporaryCheck.next
+
+                except AttributeError:
+                    print(key + 'finns inte i listan')
+
+            else:
+                raise KeyError(key + 'finns inte i listan')
 
 class Atom:
 
@@ -9,6 +51,7 @@ class Atom:
 
     def __str__(self):
         return "{" + self.namn + " " +  str(self.vikt) + "}"
+
 
 def skapaAtomlista():
     """Returnerar en lista med atomernas namn och vikt"""
@@ -130,12 +173,11 @@ Cn 285"
 def lagraHashtabell(atomlista):
     """Lagrar atomlistans element i en hashtabell"""
     antalElement = len(atomlista)
-    hashtabell = Hashtabell(antalElement)
+    hashtable = Hashtable(antalElement)
     for element in atomlista:
-        namn, vikt = element.split()
+        namn, vikt = element.split() #delar upp listan efter namn och vikt
         nyAtom = Atom(namn, float(vikt))
-        hashtabell.put(namn, nyAtom)
-    return hashtabell
+        hashNode = HashNode(namn, nyAtom, None)
+        hashtable.store(hashNode)
+    return hashtable
 
-atomlista = skapaAtomlista()
-hashtabell = lagraHashtabell(atomlista)
