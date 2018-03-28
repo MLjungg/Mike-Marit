@@ -74,8 +74,8 @@ class Molgrafik:
         rest=self.ram(master,LEFT)
         uppruta=self.ram(storruta,TOP)
         nerruta=self.ram(storruta,TOP)
-        self.atomruta(uppruta,p.atom,p.num)
-        if p.down:
+        self.atomruta(uppruta,p.atom,p.num) #Rutan skapas
+        if p.down:  #Finns det en ruta under skapas den.
             self.stolpe(nerruta)
             self.picture(nerruta,p.down)
             self.ram(nerruta,TOP)
@@ -88,6 +88,6 @@ class Molgrafik:
         if self.root!=None:
             self.root.destroy()
         self.root=Tk()
-        Label(self.root,text="  ",font=self.stor,bg="white").pack(side=LEFT,fill=Y)
-        self.picture(self.root,p)
-        mainloop() #Kommentera bort om du anv. IDLE (IDLE har egen mainloop())
+        Label(self.root,text="  ",font=self.stor,bg="white").pack(side=LEFT,fill=Y) #Skapar fönster
+        self.picture(self.root, p)
+        mainloop()

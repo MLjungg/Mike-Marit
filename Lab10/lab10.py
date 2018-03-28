@@ -16,14 +16,12 @@ from hashatoms import *
 class GrammarError(Exception):
     pass
 
-
 class Ruta:
     def __init__(self, atom="()", num=1):
         self.atom = atom
         self.num = num
         self.next = None
         self.down = None
-
 
 # Function for checking if molecule's syntax is correct - <mol>
 def readformula(molecule):
@@ -33,7 +31,6 @@ def readformula(molecule):
     else:
         raise GrammarError('Felaktig gruppstart vid radslutet ' + str(molecule))
     return mol
-
 
 # Check if our molecule is a molecule - <group> | <group><mol>
 def readmol(molecule):
